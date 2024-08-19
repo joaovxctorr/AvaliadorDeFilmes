@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    /* Tema Claro */
+    .light {
+      @apply bg-white text-black;
+    }
+  
+    /* Tema Escuro */
+    .dark {
+      @apply bg-gray-900 text-gray-100;
+    }
+  }
