@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface MovieCardProps {
   id: number;
@@ -13,9 +14,11 @@ const MovieCard: React.FC<MovieCardProps> = ({ id, title, poster_path, rating, o
   return (
     <div className="flex flex-col items-center bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
       <Link href={`/movies/${id}`} className="cursor-pointer">
-        <img
+        <Image
           src={`https://image.tmdb.org/t/p/w500${poster_path}`}
           alt={title}
+          width={192} // Define a largura da imagem
+          height={288} // Define a altura da imagem
           className="w-48 h-auto rounded-md mb-4"
         />
       </Link>

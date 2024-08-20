@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import StarRating from '@/components/StarRating'; 
 import SaveForLaterButton from '@/components/SaveForLaterButton';
+import Image from 'next/image';
 
 const API_KEY = 'a6734746bce3d7dd39fa4e2400a0f55e'; 
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -58,9 +59,11 @@ const MovieDetails = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
       <div className="max-w-4xl w-full bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
         <div className="flex flex-col md:flex-row items-center">
-          <img
+          <Image
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt={movie.title}
+            width={256}  // Largura ajustada
+            height={384} // Altura ajustada
             className="w-64 h-auto rounded-md mb-4 md:mb-0 md:mr-8"
           />
           <div className="flex flex-col items-center md:items-start">
@@ -82,7 +85,6 @@ const MovieDetails = () => {
               movieTitle={movie.title}
               moviePosterPath={movie.poster_path}
             />
-            
           </div>
         </div>
       </div>

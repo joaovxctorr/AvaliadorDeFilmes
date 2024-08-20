@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { FaUser } from 'react-icons/fa'; // Importando o ícone de perfil
+import Image from 'next/image'; // Importando o componente Image do Next.js
 
 const API_KEY = 'a6734746bce3d7dd39fa4e2400a0f55e';
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -91,9 +92,11 @@ const HomePage = () => {
           {movies.map((movie) => (
             <div key={movie.id} className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
               <Link href={`/movies/${movie.id}`}>
-                <img
+                <Image
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt={movie.title}
+                  width={500}
+                  height={750}
                   className="w-full h-auto rounded-md cursor-pointer mb-2"
                 />
               </Link>

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import StarRating from '@/components/StarRating'; 
 import SaveForLaterButton from '@/components/SaveForLaterButton'; 
+import Image from 'next/image';
 
 const API_KEY = 'a6734746bce3d7dd39fa4e2400a0f55e'; 
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -55,21 +56,23 @@ const MovieDetails = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-    <div className="max-w-4xl w-full bg-white dark:bg-gray-800 p-6 rounded-md shadow-md">
-      <div className="flex flex-col md:flex-row items-center">
-        <img
-          src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-          alt={movie.title}
-          className="w-64 h-auto rounded-md mb-4 md:mb-0 md:mr-8"
-        />
-        <div className="flex flex-col items-center md:items-start w-full">
-          <h1 className="text-3xl font-bold mb-2 text-center md:text-left">{movie.title}</h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-2 text-center md:text-left">
-            {movie.release_date}
-          </p>
-          <p className="text-gray-800 dark:text-gray-300 mb-4 text-center md:text-left">
-            {movie.overview}
-          </p>
+      <div className="max-w-4xl w-full bg-white dark:bg-gray-800 p-6 rounded-md shadow-md">
+        <div className="flex flex-col md:flex-row items-center">
+          <Image
+            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+            alt={movie.title}
+            width={256} // Define a largura da imagem (ajustável)
+            height={384} // Define a altura da imagem (ajustável)
+            className="w-64 h-auto rounded-md mb-4 md:mb-0 md:mr-8"
+          />
+          <div className="flex flex-col items-center md:items-start w-full">
+            <h1 className="text-3xl font-bold mb-2 text-center md:text-left">{movie.title}</h1>
+            <p className="text-gray-600 dark:text-gray-400 mb-2 text-center md:text-left">
+              {movie.release_date}
+            </p>
+            <p className="text-gray-800 dark:text-gray-300 mb-4 text-center md:text-left">
+              {movie.overview}
+            </p>
             
             <StarRating
               movieId={movie.id}
@@ -78,9 +81,7 @@ const MovieDetails = () => {
               initialRating={rating}
               onRatingChange={handleRatingChange}
             />
-            
 
-            {/* Usando o componente SaveForLaterButton */}
             <SaveForLaterButton
               movieId={movie.id}
               movieTitle={movie.title}

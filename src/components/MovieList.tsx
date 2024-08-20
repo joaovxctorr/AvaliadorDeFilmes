@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image'; // Importa o componente Image do Next.js
 
 // Definição do tipo Movie, que representa as propriedades básicas de um filme
 interface Movie {
@@ -24,10 +25,12 @@ const MovieList: React.FC<MovieListProps> = ({ movies, onSelectMovie }) => {
           className="cursor-pointer" // Adiciona o cursor pointer para indicar que é clicável
           onClick={() => onSelectMovie(movie.id)} // Chama onSelectMovie com o ID do filme quando o bloco é clicado
         >
-          {/* Exibe a imagem do pôster do filme */}
-          <img
+          {/* Exibe a imagem do pôster do filme usando o componente Image */}
+          <Image
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} // URL da imagem do pôster
             alt={movie.title} // Texto alternativo para a imagem
+            width={500} // Define a largura da imagem
+            height={750} // Define a altura da imagem
             className="w-full h-auto rounded-md" // Estilização para ajustar o tamanho e adicionar bordas arredondadas
           />
           {/* Exibe o título do filme */}
