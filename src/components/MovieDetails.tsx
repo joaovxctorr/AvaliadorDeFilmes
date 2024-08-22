@@ -33,6 +33,7 @@ const MovieDetails = () => {
       const response = await axios.get(`${BASE_URL}/movie/${movieId}`, {
         params: {
           api_key: API_KEY,
+          language: 'pt-BR',
         },
       });
       setMovie(response.data);
@@ -61,8 +62,8 @@ const MovieDetails = () => {
           <Image
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt={movie.title}
-            width={256} // Define a largura da imagem (ajustável)
-            height={384} // Define a altura da imagem (ajustável)
+            width={256} 
+            height={384} 
             className="w-64 h-auto rounded-md mb-4 md:mb-0 md:mr-8"
           />
           <div className="flex flex-col items-center md:items-start w-full">

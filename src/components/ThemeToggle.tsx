@@ -23,7 +23,8 @@ const ThemeToggle = () => {
   return (
     <button
       onClick={toggleTheme}
-      className="bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-2 rounded-md transition-colors"
+      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      className="p-2 rounded-md transition-colors flex items-center justify-center text-lg dark:bg-gray-800 bg-gray-200 dark:text-gray-200 text-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
     >
       {theme === 'light' ? '🌙' : '🌞'}
     </button>

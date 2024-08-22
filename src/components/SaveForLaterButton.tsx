@@ -21,6 +21,8 @@ const SaveForLaterButton: React.FC<SaveForLaterButtonProps> = ({
   const handleSaveForLater = () => {
     if (savedForLater) {
       localStorage.removeItem(`savedForLater-${movieId}`);
+      localStorage.removeItem(`title-${movieId}`);
+      localStorage.removeItem(`poster-${movieId}`);
       setSavedForLater(false);
     } else {
       localStorage.setItem(`savedForLater-${movieId}`, "true");
@@ -33,7 +35,10 @@ const SaveForLaterButton: React.FC<SaveForLaterButtonProps> = ({
   return (
     <button
       onClick={handleSaveForLater}
-      className={`mt-4 px-4 py-2 ${savedForLater ? 'bg-green-500' : 'bg-blue-500'} text-white rounded-md`}
+      className={`mt-4 px-4 py-2 rounded-md focus:outline-none transition-colors ${
+        savedForLater ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'
+      } text-white`}
+      aria-pressed={savedForLater}
     >
       {savedForLater ? "Salvo para Assistir Mais Tarde" : "Assistir Mais Tarde"}
     </button>

@@ -70,8 +70,8 @@ const HomePage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="p-4 max-w-6xl w-full">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-center w-full">Buscador De Filmes</h1>
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
+          <h1 className="text-2xl font-bold text-center w-full mb-4 sm:mb-0">Buscador De Filmes</h1>
           <Link href="/profile">
             <FaUser size={24} className="text-gray-700 dark:text-gray-300" /> {/* Ícone de perfil */}
           </Link>
@@ -95,12 +95,12 @@ const HomePage = () => {
                 <Image
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt={movie.title}
-                  width={500}
-                  height={750}
+                  width={300} 
+                  height={450} 
                   className="w-full h-auto rounded-md cursor-pointer mb-2"
                 />
               </Link>
-              <h2 className="text-sm font-semibold mb-2">{movie.title}</h2>
+              <h2 className="text-sm font-semibold mb-2 truncate">{movie.title}</h2>
               <p className="text-xs text-gray-600 dark:text-gray-400">{movie.release_date}</p>
             </div>
           ))}

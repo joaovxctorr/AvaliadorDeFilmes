@@ -60,8 +60,8 @@ const ProfilePage = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
       {movies.length > 0 && (
         <>
-          <h2 className="text-2xl font-bold mb-4">Filmes Avaliados</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+          <h2 className="text-2xl font-bold mb-4 text-center">Filmes Avaliados</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
             {movies.map(movie => (
               <MovieCard
                 key={movie.id}
@@ -83,8 +83,8 @@ const ProfilePage = () => {
 
       {savedForLaterMovies.length > 0 && (
         <>
-          <h2 className="text-2xl font-bold mb-4">Assistir Mais Tarde</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <h2 className="text-2xl font-bold mb-4 text-center">Assistir Mais Tarde</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {savedForLaterMovies.map(movie => (
               <MovieCard
                 key={movie.id}

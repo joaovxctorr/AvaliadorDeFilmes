@@ -1,40 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Avaliador de Filmes
+Avaliador de Filmes é uma aplicação web que permite aos usuários pesquisar filmes, avaliar e salvar filmes para assistir mais tarde. A aplicação é projetada para proporcionar uma experiência rica e interativa, com funcionalidades para explorar filmes populares e gerenciar avaliações pessoais.
 
-## Getting Started
+# Funcionalidades
+## Pesquisa de Filmes
+A funcionalidade de pesquisa permite que os usuários encontrem filmes e visualizem detalhes sobre eles. As principais características incluem:
 
-First, run the development server:
+* Busca por Filmes: Pesquisa por nome de filme e visualização de detalhes em um card.
+* Exibição de Filmes Populares: Mostra os 100 filmes mais populares na tela inicial.
+* Interface Intuitiva: Design responsivo e fácil de usar para uma experiência de pesquisa fluida.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Avaliação de Filmes
+* Os usuários podem avaliar filmes com até 5 estrelas e ver suas avaliações refletidas em seu perfil. As características incluem:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+* Avaliação por Estrelas: Sistema de avaliação com 5 estrelas para cada filme.
+* Armazenamento Local: Avaliações são salvas localmente no perfil do usuário.
+* Visualização das Avaliações: Avaliações de filmes são exibidas na página de perfil do usuário.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Salvar para Assistir Mais Tarde
+Os usuários podem salvar filmes para assistir mais tarde. As características incluem:
+* Opção de Salvar: Adicione filmes à lista de "assistir mais tarde".
+* Gerenciamento de Lista: Exibição de filmes salvos na página de perfil do usuário.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Tecnologias Utilizadas
+* React: Biblioteca JavaScript para construção de interfaces de usuário, com suporte a componentes reutilizáveis e gestão eficiente do estado.
+* Next.js: Framework para renderização do lado do servidor e geração de sites estáticos, melhorando o desempenho e SEO.
+* TypeScript: Superset do JavaScript com tipagem estática para evitar erros e facilitar a manutenção do código.
+* Tailwind CSS: Framework de utilitários para estilização de componentes, proporcionando layouts responsivos e estilos personalizados.
+* TMDB API: API pública para acessar dados sobre filmes, utilizada para buscar informações e exibir detalhes dos filmes.

@@ -8,10 +8,16 @@ interface StarRatingProps {
   onRatingChange: (rating: number) => void;
 }
 
-const StarRating: React.FC<StarRatingProps> = ({ movieId, movieTitle, moviePosterPath, initialRating = 0, onRatingChange }) => {
+const StarRating: React.FC<StarRatingProps> = ({
+  movieId,
+  movieTitle,
+  moviePosterPath,
+  initialRating = 0,
+  onRatingChange,
+}) => {
   const [rating, setRating] = useState<number>(initialRating);
   const [hoveredRating, setHoveredRating] = useState<number | null>(null);
-  const [message, setMessage] = useState<string | null>(null); // Estado para mensagem de confirmação
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const savedRating = localStorage.getItem(`rating-${movieId}`);
@@ -25,8 +31,8 @@ const StarRating: React.FC<StarRatingProps> = ({ movieId, movieTitle, moviePoste
     localStorage.setItem(`rating-${movieId}`, value.toString());
     localStorage.setItem(`title-${movieId}`, movieTitle);
     localStorage.setItem(`poster-${movieId}`, moviePosterPath);
-    setMessage('Avaliação salva!'); // Define a mensagem de confirmação
-    setTimeout(() => setMessage(null), 2000); // Oculta a mensagem após 2 segundos
+    setMessage('Avaliação salva!');
+    setTimeout(() => setMessage(null), 2000);
   };
 
   const handleMouseEnter = (value: number) => setHoveredRating(value);
@@ -49,14 +55,14 @@ const StarRating: React.FC<StarRatingProps> = ({ movieId, movieTitle, moviePoste
               onMouseEnter={() => handleMouseEnter(starValue)}
               onMouseLeave={handleMouseLeave}
               onClick={() => handleStarClick(starValue)}
-              className={`cursor-pointer text-2xl ${isFilled ? 'text-yellow-400' : 'text-gray-300'}`}
+              className={`cursor-pointer text-2xl md:text-3xl lg:text-4xl ${isFilled ? 'text-yellow-400' : 'text-gray-300'}`}
             >
               ★
             </span>
           );
         })}
       </div>
-      {message && <div className="text-green-500">{message}</div>} {/* Mensagem de confirmação */}
+      {message && <div className="text-green-500 text-sm md:text-base">{message}</div>}
     </div>
   );
 };
