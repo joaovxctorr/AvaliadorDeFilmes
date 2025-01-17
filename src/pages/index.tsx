@@ -3,7 +3,7 @@ import axios from 'axios';
 import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
 import Image from 'next/image';
-import SearchBar from '../components/SearchBar'; 
+import SearchBar from '../components/SearchBar';
 
 const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
@@ -19,51 +19,48 @@ const HomePage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [category, setCategory] = useState<'popular' | 'now_playing' | 'top_rated'>('popular');
 
-  // Função para buscar filmes conforme a categoria
-  const fetchMovies = async () => {
-    try {
-      const response = await axios.get(`${BASE_URL}/movie/${category}`, {
-        params: {
-          api_key: API_KEY,
-          language: 'pt-BR',
-          page: 1,
-        },
-      });
-
-      let fetchedMovies = response.data.results;
-
-      // Ordenar por data se for a categoria 'now_playing'
-      if (category === 'now_playing') {
-        fetchedMovies = fetchedMovies.sort((a: Movie, b: Movie) => {
-          const dateA = new Date(a.release_date).getTime();
-          const dateB = new Date(b.release_date).getTime();
-          return dateB - dateA; // Ordem decrescente
-        });
-      }
-
-      setMovies(fetchedMovies.slice(0, 18));
-    } catch (error) {
-      console.error('Erro ao buscar filmes', error);
-    }
-  };
-
   useEffect(() => {
-    fetchMovies(); // Carrega filmes pela categoria
-  }, [category]);
+    const fetchMovies = async () => {
+      try {
+        const response = await axios.get(`${BASE_URL}/movie/${category}`, {
+          params: {
+            api_key: API_KEY,
+            language: 'pt-BR',
+            page: 1,
+          },
+        });
+
+        let fetchedMovies = response.data.results;
+
+        if (category === 'now_playing') {
+          fetchedMovies = fetchedMovies.sort((a: Movie, b: Movie) => {
+            const dateA = new Date(a.release_date).getTime();
+            const dateB = new Date(b.release_date).getTime();
+            return dateB - dateA; // Ordem decrescente
+          });
+        }
+
+        setMovies(fetchedMovies.slice(0, 18));
+      } catch (error) {
+        console.error('Erro ao buscar filmes', error);
+      }
+    };
+
+    fetchMovies();
+  }, [category]); // category como dependência
 
   return (
-<div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-  <div className="p-4 max-w-6xl w-full">
-    <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
-      <h1 className="text-2xl font-bold text-center w-full mb-4 sm:mb-0">Buscador De Filmes</h1>
-      <Link href="/profile">
-        <FaUser
-          size={34}  
-          className="bg-blue-500 text-white rounded-3xl hover:bg-blue-600 transition duration-200 p-2" 
-        />
-      </Link>
-    </div>
-
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+      <div className="p-4 max-w-6xl w-full">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
+          <h1 className="text-2xl font-bold text-center w-full mb-4 sm:mb-0">Buscador De Filmes</h1>
+          <Link href="/profile">
+            <FaUser
+              size={34}
+              className="bg-blue-500 text-white rounded-3xl hover:bg-blue-600 transition duration-200 p-2"
+            />
+          </Link>
+        </div>
 
         {/* Barra de pesquisa */}
         <SearchBar onSearch={setMovies} setCategory={setCategory} category={category} />
