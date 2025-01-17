@@ -3,9 +3,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import StarRating from '@/components/StarRating';
 import SaveForLaterButton from '@/components/SaveForLaterButton';
+import Comments from '@/components/Comments'; // Importando o componente Comments
+import HomeButton from '@/components/HomeButton'; // Importando o componente HomeButton
 import Image from 'next/image';
 
-const API_KEY = 'a6734746bce3d7dd39fa4e2400a0f55e'; 
+const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 interface Movie {
@@ -42,17 +44,14 @@ const MovieDetails = () => {
     }
   };
 
-  // Função chamada quando a avaliação é alterada
   const handleRatingChange = (newRating: number) => {
     setRating(newRating);
     if (movie) {
-      // Salvando a avaliação e o título do filme no localStorage
       localStorage.setItem(`rating-${movie.id}`, newRating.toString());
-      localStorage.setItem(`title-${movie.id}`, movie.title);
     }
   };
 
-  if (!movie) {
+  if (!movie) { // 
     return <div className="text-center text-gray-500">Carregando...</div>;
   }
 
@@ -63,15 +62,15 @@ const MovieDetails = () => {
           <Image
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt={movie.title}
-            width={256}  
-            height={384} 
+            width={256}
+            height={384}
             className="w-64 h-auto rounded-md mb-4 md:mb-0 md:mr-8"
           />
-          <div className="flex flex-col items-center md:items-start">
+          <div className="flex flex-col items-center md:items-start w-full">
             <h1 className="text-2xl md:text-3xl font-bold mb-2">{movie.title}</h1>
             <p className="text-gray-600 dark:text-gray-400 mb-2">{movie.release_date}</p>
             <p className="text-gray-800 dark:text-gray-300 mb-4">{movie.overview}</p>
-            {/* Componente StarRating */}
+
             <StarRating
               movieId={movie.id}
               movieTitle={movie.title}
@@ -80,15 +79,23 @@ const MovieDetails = () => {
               onRatingChange={handleRatingChange}
             />
 
-            {/* Componente SaveForLaterButton */}
             <SaveForLaterButton
               movieId={movie.id}
               movieTitle={movie.title}
               moviePosterPath={movie.poster_path}
             />
+
+            {/* Componente de Comentários */}
+            <div className="mt-6 w-full">
+              <Comments movieId={movie.id} />
+            </div>
           </div>
         </div>
       </div>
+      {/* Componente de Botao */}
+        <div className="mt-6">
+          <HomeButton /> 
+        </div>
     </div>
   );
 };

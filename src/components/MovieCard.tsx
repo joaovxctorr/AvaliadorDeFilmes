@@ -23,14 +23,14 @@ const MovieCard: React.FC<MovieCardProps> = ({ id, title, poster_path, rating, o
         />
       </Link>
       <h2 className="text-xl font-bold mb-2">{title}</h2>
-      {rating !== null && (
+      {rating !== null && ( // 
         <p className="text-yellow-400">{rating} ★</p> // Exibe a avaliação se não for null
       )}
       <button
         onClick={() => onRemove(id)} // Chama a função onRemove com o ID do filme quando o botão é clicado
         className="mt-2 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400"
       >
-        Remove
+        Remover
       </button>
     </div>
   );

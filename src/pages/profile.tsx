@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MovieCard from '@/components/MovieCard';
+import HomeButton from '@/components/HomeButton';
 
 interface Movie {
   id: number;
@@ -11,6 +12,7 @@ interface Movie {
 const ProfilePage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [savedForLaterMovies, setSavedForLaterMovies] = useState<Movie[]>([]);
+  const [isRatedMoviesVisible, setIsRatedMoviesVisible] = useState(true); // Estado para alternar entre as listas
 
   useEffect(() => {
     // Carregar filmes avaliados do localStorage
@@ -58,7 +60,24 @@ const ProfilePage = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-      {movies.length > 0 && (
+      {/* Botões para alternar entre filmes avaliados e para assistir mais tarde */}
+      <div className="mb-6 flex space-x-4">
+        <button
+          onClick={() => setIsRatedMoviesVisible(true)}
+          className={`p-2 rounded-md ${isRatedMoviesVisible ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-black dark:text-white'}`}
+        >
+          Filmes Avaliados
+        </button>
+        <button
+          onClick={() => setIsRatedMoviesVisible(false)}
+          className={`p-2 rounded-md ${!isRatedMoviesVisible ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-black dark:text-white'}`}
+        >
+          Assistir Mais Tarde
+        </button>
+      </div>
+
+      {/* Seção de filmes avaliados */}
+      {isRatedMoviesVisible && movies.length > 0 && (
         <>
           <h2 className="text-2xl font-bold mb-4 text-center">Filmes Avaliados</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
@@ -81,7 +100,8 @@ const ProfilePage = () => {
         </>
       )}
 
-      {savedForLaterMovies.length > 0 && (
+      {/* Seção de filmes para assistir mais tarde */}
+      {!isRatedMoviesVisible && savedForLaterMovies.length > 0 && (
         <>
           <h2 className="text-2xl font-bold mb-4 text-center">Assistir Mais Tarde</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
@@ -104,9 +124,15 @@ const ProfilePage = () => {
         </>
       )}
 
+      {/* Mensagem caso não haja filmes na lista */}
       {movies.length === 0 && savedForLaterMovies.length === 0 && (
         <p className="text-center text-gray-500">Nenhuma avaliação ou filme salvo para assistir mais tarde.</p>
       )}
+
+      {/* Componente de Voltar para a Página Inicial */}
+      <div className="mt-6">
+        <HomeButton />
+      </div>
     </div>
   );
 };

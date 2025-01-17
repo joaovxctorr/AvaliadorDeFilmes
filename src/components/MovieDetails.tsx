@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import StarRating from '@/components/StarRating'; 
 import SaveForLaterButton from '@/components/SaveForLaterButton'; 
+import HomeButton from '@/components/HomeButton';  
 import Image from 'next/image';
 
-const API_KEY = 'a6734746bce3d7dd39fa4e2400a0f55e'; 
+const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 const BASE_URL = 'https://api.themoviedb.org/3';
 
 interface Movie {
@@ -51,7 +52,7 @@ const MovieDetails = () => {
     }
   };
 
-  if (!movie) {
+  if (!movie) { 
     return <div className="text-center text-gray-500">Loading...</div>;
   }
 
@@ -90,6 +91,11 @@ const MovieDetails = () => {
             />
           </div>
         </div>
+      </div>
+
+      {/* Componente de Voltar para a Página Inicial */}
+      <div className="mt-6">
+        <HomeButton /> 
       </div>
     </div>
   );

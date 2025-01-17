@@ -5,6 +5,7 @@ interface StarRatingProps {
   movieTitle: string;
   moviePosterPath: string;
   initialRating?: number;
+  
   onRatingChange: (rating: number) => void;
 }
 

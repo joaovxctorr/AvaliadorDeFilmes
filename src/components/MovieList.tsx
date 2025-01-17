@@ -1,16 +1,15 @@
 import React from 'react';
-import Image from 'next/image'; // Importa o componente Image do Next.js
+import Image from 'next/image'; 
+import HomeButton from '@/components/HomeButton';
 
-// Definição do tipo Movie, que representa as propriedades básicas de um filme
 interface Movie {
   id: number; 
   title: string; 
-  poster_path: string; // Caminho para a imagem do pôster do filme
+  poster_path: string; 
 }
 
-// Definição das propriedades esperadas pelo componente MovieList
-interface MovieListProps {
-  movies: Movie[]; // Lista de filmes a serem exibidos
+interface MovieListProps { 
+  movies: Movie[]; 
   onSelectMovie: (id: number) => void; // Função de callback chamada quando um filme é selecionado, com o ID do filme como argumento
 }
 
@@ -21,8 +20,8 @@ const MovieList: React.FC<MovieListProps> = ({ movies, onSelectMovie }) => {
       {/* Mapeia a lista de filmes e gera um bloco para cada um */}
       {movies.map((movie) => (
         <div
-          key={movie.id} // Utiliza o ID do filme como chave para otimizar a renderização
-          className="cursor-pointer hover:scale-105 transition-transform duration-300" // Adiciona o cursor pointer e animação de escala ao passar o mouse
+          key={movie.id} 
+          className="cursor-pointer hover:scale-105 transition-transform duration-300" 
           onClick={() => onSelectMovie(movie.id)} // Chama onSelectMovie com o ID do filme quando o bloco é clicado
         >
           {/* Exibe a imagem do pôster do filme usando o componente Image */}
@@ -38,6 +37,7 @@ const MovieList: React.FC<MovieListProps> = ({ movies, onSelectMovie }) => {
         </div>
       ))}
     </div>
+    
   );
 };
 
