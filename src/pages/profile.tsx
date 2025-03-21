@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import MovieCard from '@/components/MovieCard';
 import HomeButton from '@/components/HomeButton';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Movie {
   id: number;
@@ -12,10 +14,9 @@ interface Movie {
 const ProfilePage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [savedForLaterMovies, setSavedForLaterMovies] = useState<Movie[]>([]);
-  const [isRatedMoviesVisible, setIsRatedMoviesVisible] = useState(true); // Estado para alternar entre as listas
+  const [isRatedMoviesVisible, setIsRatedMoviesVisible] = useState(true);
 
   useEffect(() => {
-    // Carregar filmes avaliados do localStorage
     const ratedMovies: Movie[] = [];
     const savedLaterMovies: Movie[] = [];
 
@@ -58,10 +59,47 @@ const ProfilePage = () => {
     setSavedForLaterMovies(savedLaterMovies);
   }, []);
 
+  const handleRemove = (id: number, fromList: 'rated' | 'saved') => {
+    if (fromList === 'rated') {
+      setMovies(movies.filter(m => m.id !== id));
+      localStorage.removeItem(`rating-${id}`);
+      localStorage.removeItem(`title-${id}`);
+      localStorage.removeItem(`poster-${id}`);
+      toast.success('Filme removido da lista de avaliados!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    } else if (fromList === 'saved') {
+      setSavedForLaterMovies(savedForLaterMovies.filter(m => m.id !== id));
+      localStorage.removeItem(`savedForLater-${id}`);
+      localStorage.removeItem(`title-${id}`);
+      localStorage.removeItem(`poster-${id}`);
+      toast.success('Filme removido da lista de "Assistir Mais Tarde"!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 p-4">
-      {/* Botões para alternar entre filmes avaliados e para assistir mais tarde */}
-      <div className="mb-6 flex space-x-4">
+    <div className="relative flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 p-4">
+      {/* Botão de Perfil fixo no topo direito */}
+      <div className="absolute top-4 right-4">
+        <HomeButton />
+      </div>
+
+      {/* Botões de alternância */}
+      <div className="mb-6 flex space-x-4 mt-16">
         <button
           onClick={() => setIsRatedMoviesVisible(true)}
           className={`p-2 rounded-md ${isRatedMoviesVisible ? 'bg-blue-500 text-white' : 'bg-gray-200 dark:bg-gray-800 text-black dark:text-white'}`}
@@ -77,10 +115,10 @@ const ProfilePage = () => {
       </div>
 
       {/* Seção de filmes avaliados */}
-      {isRatedMoviesVisible && movies.length > 0 && (
+      {isRatedMoviesVisible && movies.length > 0 ? (
         <>
-          <h2 className="text-2xl font-bold mb-4 text-center">Filmes Avaliados</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-8">
+          <h2 className="text-2xl font-bold mb-4 text-center text-gray-100">Filmes Avaliados</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-8">
             {movies.map(movie => (
               <MovieCard
                 key={movie.id}
@@ -88,23 +126,15 @@ const ProfilePage = () => {
                 title={movie.title}
                 poster_path={movie.poster_path}
                 rating={movie.rating!}
-                onRemove={(id: number) => {
-                  setMovies(movies.filter(m => m.id !== id));
-                  localStorage.removeItem(`rating-${id}`);
-                  localStorage.removeItem(`title-${id}`);
-                  localStorage.removeItem(`poster-${id}`);
-                }}
+                onRemove={() => handleRemove(movie.id, 'rated')}
               />
             ))}
           </div>
         </>
-      )}
-
-      {/* Seção de filmes para assistir mais tarde */}
-      {!isRatedMoviesVisible && savedForLaterMovies.length > 0 && (
+      ) : !isRatedMoviesVisible && savedForLaterMovies.length > 0 ? (
         <>
-          <h2 className="text-2xl font-bold mb-4 text-center">Assistir Mais Tarde</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          <h2 className="text-2xl font-bold mb-4 text-center text-gray-100">Assistir Mais Tarde</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {savedForLaterMovies.map(movie => (
               <MovieCard
                 key={movie.id}
@@ -112,27 +142,19 @@ const ProfilePage = () => {
                 title={movie.title}
                 poster_path={movie.poster_path}
                 rating={movie.rating!}
-                onRemove={(id: number) => {
-                  setSavedForLaterMovies(savedForLaterMovies.filter(m => m.id !== id));
-                  localStorage.removeItem(`savedForLater-${id}`);
-                  localStorage.removeItem(`title-${id}`);
-                  localStorage.removeItem(`poster-${id}`);
-                }}
+                onRemove={() => handleRemove(movie.id, 'saved')}
               />
             ))}
           </div>
         </>
+      ) : (
+        <p className="text-center text-gray-500">
+          Nenhuma avaliação ou filme salvo para assistir mais tarde.
+        </p>
       )}
 
-      {/* Mensagem caso não haja filmes na lista */}
-      {movies.length === 0 && savedForLaterMovies.length === 0 && (
-        <p className="text-center text-gray-500">Nenhuma avaliação ou filme salvo para assistir mais tarde.</p>
-      )}
-
-      {/* Componente de Voltar para a Página Inicial */}
-      <div className="mt-6">
-        <HomeButton />
-      </div>
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };

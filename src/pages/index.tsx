@@ -18,9 +18,11 @@ interface Movie {
 const HomePage = () => {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [category, setCategory] = useState<'popular' | 'now_playing' | 'top_rated'>('popular');
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchMovies = async () => {
+      setLoading(true);
       try {
         const response = await axios.get(`${BASE_URL}/movie/${category}`, {
           params: {
@@ -36,53 +38,63 @@ const HomePage = () => {
           fetchedMovies = fetchedMovies.sort((a: Movie, b: Movie) => {
             const dateA = new Date(a.release_date).getTime();
             const dateB = new Date(b.release_date).getTime();
-            return dateB - dateA; // Ordem decrescente
+            return dateB - dateA;
           });
         }
 
         setMovies(fetchedMovies.slice(0, 18));
       } catch (error) {
         console.error('Erro ao buscar filmes', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchMovies();
-  }, [category]); // category como dependência
+  }, [category]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
-      <div className="p-4 max-w-6xl w-full">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-700 text-white">
+      <div className="p-6 max-w-7xl w-full">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-center w-full mb-4 sm:mb-0">Buscador De Filmes</h1>
-          <Link href="/profile">
-            <FaUser
-              size={34}
-              className="bg-blue-500 text-white rounded-3xl hover:bg-blue-600 transition duration-200 p-2"
-            />
+          <h1 className="text-3xl font-extrabold text-center w-full mb-4 sm:mb-0 text-gray-100 drop-shadow-lg">Buscador De Filmes</h1>
+          <Link href="/profile" className="hover:scale-110 transition-transform">
+            <FaUser size={38} className="bg-blue-500 text-white rounded-full hover:bg-blue-600 transition duration-200 p-2 shadow-lg" />
           </Link>
         </div>
 
         {/* Barra de pesquisa */}
         <SearchBar onSearch={setMovies} setCategory={setCategory} category={category} />
 
-        {/* Exibição dos filmes */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-5">
-          {movies.map((movie) => (
-            <div key={movie.id} className="bg-white dark:bg-gray-800 p-4 rounded-md shadow-md">
-              <Link href={`/movies/${movie.id}`}>
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt={movie.title}
-                  width={500}
-                  height={450}
-                  className="w-full h-auto rounded-md cursor-pointer mb-2"
-                />
-              </Link>
-              <h2 className="text-sm font-semibold mb-2 truncate">{movie.title}</h2>
-              <p className="text-xs text-gray-600 dark:text-gray-400">{movie.release_date}</p>
-            </div>
-          ))}
-        </div>
+        {/* Loading Indicator */}
+        {loading ? (
+          <div className="text-center text-gray-400 text-lg font-medium mt-6 animate-pulse">Carregando...</div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 mt-6">
+            {movies.map((movie) => (
+              <div key={movie.id} className="bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                <Link href={`/movies/${movie.id}`}>
+                  <div className="relative group cursor-pointer">
+                    <Image
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      alt={movie.title}
+                      width={300}
+                      height={450}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+                      <p className="text-white text-lg font-semibold">Ver detalhes</p>
+                    </div>
+                  </div>
+                </Link>
+                <div className="p-4">
+                  <h2 className="text-md font-bold truncate text-gray-200">{movie.title}</h2>
+                  <p className="text-sm text-gray-400">{new Date(movie.release_date).toLocaleDateString()}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

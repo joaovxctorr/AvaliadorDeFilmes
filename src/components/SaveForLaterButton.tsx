@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface SaveForLaterButtonProps {
   movieId: number;
@@ -12,7 +14,6 @@ const SaveForLaterButton: React.FC<SaveForLaterButtonProps> = ({
   moviePosterPath,
 }) => {
   const [savedForLater, setSavedForLater] = useState<boolean>(false);
-  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem(`savedForLater-${movieId}`);
@@ -25,21 +26,30 @@ const SaveForLaterButton: React.FC<SaveForLaterButtonProps> = ({
       localStorage.removeItem(`title-${movieId}`);
       localStorage.removeItem(`poster-${movieId}`);
       setSavedForLater(false);
-      showMessage('Removido da lista de "Assistir Mais Tarde"');
+      toast.success('Removido da lista de "Assistir Mais Tarde"', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } else {
       localStorage.setItem(`savedForLater-${movieId}`, "true");
       localStorage.setItem(`title-${movieId}`, movieTitle);
       localStorage.setItem(`poster-${movieId}`, moviePosterPath);
       setSavedForLater(true);
-      showMessage('Adicionado à lista de "Assistir Mais Tarde"');
+      toast.success('Adicionado à lista de "Assistir Mais Tarde"', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
-  };
-
-  const showMessage = (text: string) => {
-    setMessage(text);
-    setTimeout(() => {
-      setMessage(null);
-    }, 2000); // Mensagem desaparece após 2 segundos
   };
 
   return (
@@ -53,7 +63,8 @@ const SaveForLaterButton: React.FC<SaveForLaterButtonProps> = ({
       >
         {savedForLater ? "Salvo para Assistir Mais Tarde" : "Assistir Mais Tarde"}
       </button>
-      {message && <div className="text-green-500 text-sm md:text-base mt-2">{message}</div>}
+
+      {/* Toast Container will be shown globally in your main component */}
     </div>
   );
 };

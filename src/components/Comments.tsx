@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface CommentsProps {
   movieId: number;
@@ -6,9 +8,7 @@ interface CommentsProps {
 
 const Comments: React.FC<CommentsProps> = ({ movieId }) => {
   const [comment, setComment] = useState<string>('');
-  const [message, setMessage] = useState<string | null>(null);
-  const [messageType, setMessageType] = useState<'success' | 'error'>('success');
-  const [isCommentSaved, setIsCommentSaved] = useState<boolean>(false); // Controle do estado do comentário salvo
+  const [isCommentSaved, setIsCommentSaved] = useState<boolean>(false);
 
   useEffect(() => {
     const storedComment = localStorage.getItem(`comment-${movieId}`);
@@ -24,27 +24,48 @@ const Comments: React.FC<CommentsProps> = ({ movieId }) => {
 
   const handleSaveOrUpdateComment = () => {
     if (!comment.trim()) {
-      showMessage('Nenhum comentário inserido!', 'error');
+      toast.error('Nenhum comentário inserido!', {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
       return;
     }
     localStorage.setItem(`comment-${movieId}`, comment.trim());
     setIsCommentSaved(true); // Atualiza o estado para indicar que o comentário foi salvo
-    showMessage(isCommentSaved ? 'Comentário atualizado com sucesso!' : 'Comentário salvo com sucesso!', 'success');
+
+    toast.success(
+      isCommentSaved ? 'Comentário atualizado com sucesso!' : 'Comentário salvo com sucesso!',
+      {
+        position: 'top-right',
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      }
+    );
   };
 
   const handleDeleteComment = () => {
     localStorage.removeItem(`comment-${movieId}`);
     setComment('');
     setIsCommentSaved(false); // Reseta o estado após excluir o comentário
-    showMessage('Comentário excluído com sucesso!', 'success');
-  };
 
-  const showMessage = (text: string, type: 'success' | 'error') => {
-    setMessageType(type);
-    setMessage(text);
-    setTimeout(() => {
-      setMessage(null);
-    }, 2000); 
+    toast.success('Comentário excluído com sucesso!', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   return (
@@ -72,16 +93,7 @@ const Comments: React.FC<CommentsProps> = ({ movieId }) => {
           </button>
         )}
       </div>
-
-      {message && (
-        <div
-          className={`mt-2 text-sm ${
-            messageType === 'success' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-          }`}
-        >
-          {message}
-        </div>
-      )}
+      
     </div>
   );
 };

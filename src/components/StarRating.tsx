@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface StarRatingProps {
   movieId: number;
   movieTitle: string;
   moviePosterPath: string;
   initialRating?: number;
-  
   onRatingChange: (rating: number) => void;
 }
 
@@ -18,7 +19,6 @@ const StarRating: React.FC<StarRatingProps> = ({
 }) => {
   const [rating, setRating] = useState<number>(initialRating);
   const [hoveredRating, setHoveredRating] = useState<number | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const savedRating = localStorage.getItem(`rating-${movieId}`);
@@ -32,15 +32,35 @@ const StarRating: React.FC<StarRatingProps> = ({
     localStorage.setItem(`rating-${movieId}`, value.toString());
     localStorage.setItem(`title-${movieId}`, movieTitle);
     localStorage.setItem(`poster-${movieId}`, moviePosterPath);
-    setMessage('Avaliação salva!');
-    setTimeout(() => setMessage(null), 2000);
+  };
+
+  const removeRating = () => {
+    setRating(0);
+    localStorage.removeItem(`rating-${movieId}`);
+    localStorage.removeItem(`title-${movieId}`);
+    localStorage.removeItem(`poster-${movieId}`);
+    toast.info(`Avaliação do filme foi removida`, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
 
   const handleMouseEnter = (value: number) => setHoveredRating(value);
   const handleMouseLeave = () => setHoveredRating(null);
+
   const handleStarClick = (value: number) => {
-    saveRating(value);
-    onRatingChange(value);
+    if (value === rating) {
+      // Remover a avaliação se o valor clicado for o mesmo que o rating atual
+      removeRating();
+    } else {
+      saveRating(value);
+      onRatingChange(value);
+    }
   };
 
   return (
@@ -49,6 +69,9 @@ const StarRating: React.FC<StarRatingProps> = ({
         {Array.from({ length: 5 }, (_, index) => {
           const starValue = index + 1;
           const isFilled = starValue <= (hoveredRating ?? rating);
+          const starClass = isFilled
+            ? 'text-yellow-400 animate-pulse'
+            : 'text-gray-300';
 
           return (
             <span
@@ -56,14 +79,14 @@ const StarRating: React.FC<StarRatingProps> = ({
               onMouseEnter={() => handleMouseEnter(starValue)}
               onMouseLeave={handleMouseLeave}
               onClick={() => handleStarClick(starValue)}
-              className={`cursor-pointer text-2xl md:text-3xl lg:text-4xl ${isFilled ? 'text-yellow-400' : 'text-gray-300'}`}
+              className={`cursor-pointer text-2xl md:text-3xl lg:text-4xl transition-transform transform ${starClass}`}
+              style={{ transition: 'transform 0.2s ease-in-out' }}
             >
               ★
             </span>
           );
         })}
       </div>
-      {message && <div className="text-green-500 text-sm md:text-base">{message}</div>}
     </div>
   );
 };
